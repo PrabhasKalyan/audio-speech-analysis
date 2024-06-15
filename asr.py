@@ -1,4 +1,3 @@
-import librosa
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras.models import Sequential
@@ -7,12 +6,15 @@ from tensorflow.keras.layers import Dense, Dropout
 
 audio="/Users/prabhaskalyan/Desktop/asr/Audio"
 
+#loads data from directory
 train_ds=tf.keras.utils.audio_dataset_from_directory(
     directory=audio,
-    batch_size=64,
-    seed=0,
+    batch_size=64, #loads particular no.of audio files to ram to train the model
+    seed=0, #using a fixed seed value makes sure that data is not shuffled
     output_sequence_length=16000
 )
+
+#converts audio signal from wave form to spectrogram
 def get_spectro(wave):
     spectrogram=tf.signal.stft(wave,frame_length=256,frame_step=128)
     spectrogram = tf.abs(spectrogram)
